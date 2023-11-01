@@ -124,6 +124,10 @@ public:
 	UFUNCTION()
 	virtual void OnManaChangedNative(float Mana, int32 StackCount);
 	UFUNCTION()
+	virtual void OnMaxHealthChangedNative(float MaxHealth, int32 StackCount);
+	UFUNCTION()
+	virtual void OnMaxManaChangedNative(float MaxMana, int32 StackCount);
+	UFUNCTION()
 	virtual void OnMoveSpeedChangedNative(float MoveSpeed, int32 StackCount);
 
 
@@ -135,6 +139,12 @@ public:
 	//Event Trigger On Mana Change
 	UFUNCTION(BlueprintImplementableEvent, Category = "GASGameplayAbility")
 	void OnManaChange(float Mana, int32 StackCount);
+	//Event Trigger On MaxHealth Change
+	UFUNCTION(BlueprintImplementableEvent, Category = "GASGameplayAbility")
+	void OnMaxHealthChange(float MaxHealth, int32 StackCount);
+	//Event Trigger On MaxMana Change
+	UFUNCTION(BlueprintImplementableEvent, Category = "GASGameplayAbility")
+	void OnMaxManaChange(float MaxMana, int32 StackCount);
 	//Event Trigger On MoveSpeed Change
 	UFUNCTION(BlueprintImplementableEvent, Category = "GASGameplayAbility")
 	void OnMoveSpeedChange(float MoveSpeed, int32 StackCount);
@@ -144,10 +154,16 @@ public:
 
 	//Getter for Health Values
 	UFUNCTION(BlueprintPure, Category = "GASGameplayAbility")
-	void GetHealthValues(float& Health, float& MaxHealth);
+	void GetHealthValue(float& Health);
 	//Getter for Mana Values
 	UFUNCTION(BlueprintPure, Category = "GASGameplayAbility")
-	void GetManaValues(float& Mana, float& MaxMana);
+	void GetManaValue(float& Mana);
+	//Getter for MaxHealth Values
+	UFUNCTION(BlueprintPure, Category = "GASGameplayAbility")
+	void GetMaxHealthValue(float& MaxHealth);
+	//Getter for MaxMana Values
+	UFUNCTION(BlueprintPure, Category = "GASGameplayAbility")
+	void GetMaxManaValue(float& MaxMana);
 	//Getter for MoveSpeed Values
 	UFUNCTION(BlueprintPure, Category = "GASGameplayAbility")
 	void GetMoveSpeedValues(float& MoveSpeed, float& MaxMoveSpeed);
@@ -157,10 +173,16 @@ public:
 
 	//Setter for Health Values
 	UFUNCTION(BlueprintCallable, Category = "GASGameplayAbility")
-	void SetHealthValues(float NewHealth, float NewMaxHealth);
+	void SetHealthValue(float NewHealth);
 	//Setter for Mana Values
 	UFUNCTION(BlueprintCallable, Category = "GASGameplayAbility")
-	void SetManaValues(float NewMana, float NewMaxMana);
+	void SetManaValue(float NewMana);
+	//Setter for MaxHealth Values
+	UFUNCTION(BlueprintCallable, Category = "GASGameplayAbility")
+	void SetMaxHealthValue(float NewMaxHealth);
+	//Setter for MaxMana Values
+	UFUNCTION(BlueprintCallable, Category = "GASGameplayAbility")
+	void SetMaxManaValue(float NewMaxMana);
 	//Setter for MoveSpeed Values
 	UFUNCTION(BlueprintCallable, Category = "GASGameplayAbility")
 	void SetMoveSpeedValues(float NewMoveSpeed, float NewMaxMoveSpeed);

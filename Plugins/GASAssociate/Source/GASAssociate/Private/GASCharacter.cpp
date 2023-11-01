@@ -38,6 +38,8 @@ void AGASCharacter::BeginPlay()
 			//Bindings for Attribute Change Delegates
 			const_cast<UGASAttributeSet*>(AttributeSetVar)->HealthChangeDelegate.AddDynamic(this, &AGASCharacter::OnHealthChangedNative);
 			const_cast<UGASAttributeSet*>(AttributeSetVar)->ManaChangeDelegate.AddDynamic(this, &AGASCharacter::OnManaChangedNative);
+			const_cast<UGASAttributeSet*>(AttributeSetVar)->MaxHealthChangeDelegate.AddDynamic(this, &AGASCharacter::OnMaxHealthChangedNative);
+			const_cast<UGASAttributeSet*>(AttributeSetVar)->MaxManaChangeDelegate.AddDynamic(this, &AGASCharacter::OnMaxManaChangedNative);
 			const_cast<UGASAttributeSet*>(AttributeSetVar)->MoveSpeedChangeDelegate.AddDynamic(this, &AGASCharacter::OnMoveSpeedChangedNative);
 		}
 	}
@@ -281,25 +283,49 @@ void AGASCharacter::OnManaChangedNative(float Mana, int32 StackCount)
 	OnManaChange(Mana, StackCount);
 }
 
+void AGASCharacter::OnMaxHealthChangedNative(float MaxHealth, int32 StackCount)
+{
+	OnMaxHealthChange(MaxHealth, StackCount);
+}
+
+void AGASCharacter::OnMaxManaChangedNative(float MaxMana, int32 StackCount)
+{
+	OnMaxManaChange(MaxMana, StackCount);
+}
+
 void AGASCharacter::OnMoveSpeedChangedNative(float MoveSpeed, int32 StackCount)
 {
 	OnMoveSpeedChange(MoveSpeed, StackCount);
 }
 
-void AGASCharacter::GetHealthValues(float& Health, float& MaxHealth)
+void AGASCharacter::GetHealthValue(float& Health)
 {
 	if (AttributeSetVar)
 	{
 		Health = AttributeSetVar->GetHealth();
-		MaxHealth = AttributeSetVar->GetMaxHealth();
 	}
 }
 
-void AGASCharacter::GetManaValues(float& Mana, float& MaxMana)
+void AGASCharacter::GetManaValue(float& Mana)
 {
 	if (AttributeSetVar)
 	{
 		Mana = AttributeSetVar->GetMana();
+	}
+}
+
+void AGASCharacter::GetMaxHealthValue(float& MaxHealth)
+{
+	if (AttributeSetVar)
+	{
+		MaxHealth = AttributeSetVar->GetMaxHealth();
+	}
+}
+
+void AGASCharacter::GetMaxManaValue(float& MaxMana)
+{
+	if (AttributeSetVar)
+	{
 		MaxMana = AttributeSetVar->GetMaxMana();
 	}
 }
@@ -313,21 +339,35 @@ void AGASCharacter::GetMoveSpeedValues(float& MoveSpeed, float& MaxMoveSpeed)
 	}
 }
 
-void AGASCharacter::SetHealthValues(float NewHealth, float NewMaxHealth)
+void AGASCharacter::SetHealthValue(float NewHealth)
 {
 	if (AttributeSetVar)
 	{
 		AbilitySystemComponent->ApplyModToAttribute(AttributeSetVar->GetHealthAttribute(), EGameplayModOp::Override, NewHealth);
-		AbilitySystemComponent->ApplyModToAttribute(AttributeSetVar->GetMaxHealthAttribute(), EGameplayModOp::Override, NewMaxHealth); 
 	}
 }
 
-void AGASCharacter::SetManaValues(float NewMana, float NewMaxMana)
+void AGASCharacter::SetManaValue(float NewMana)
 {
 	if (AttributeSetVar)
 	{
 		AbilitySystemComponent->ApplyModToAttribute(AttributeSetVar->GetManaAttribute(), EGameplayModOp::Override, NewMana);
-		AbilitySystemComponent->ApplyModToAttribute(AttributeSetVar->GetMaxManaAttribute(), EGameplayModOp::Override, NewMaxMana); 
+	}
+}
+
+void AGASCharacter::SetMaxHealthValue(float NewMaxHealth)
+{
+	if (AttributeSetVar)
+	{
+		AbilitySystemComponent->ApplyModToAttribute(AttributeSetVar->GetMaxHealthAttribute(), EGameplayModOp::Override, NewMaxHealth);
+	}
+}
+
+void AGASCharacter::SetMaxManaValue(float NewMaxMana)
+{
+	if (AttributeSetVar)
+	{
+		AbilitySystemComponent->ApplyModToAttribute(AttributeSetVar->GetMaxManaAttribute(), EGameplayModOp::Override, NewMaxMana);
 	}
 }
 

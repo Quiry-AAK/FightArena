@@ -41,15 +41,15 @@ public:
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UGASAttributeSet, Health)
 
-	//Attribute for MaxHealth
-	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_MaxHealth)
-	FGameplayAttributeData MaxHealth;
-	ATTRIBUTE_ACCESSORS(UGASAttributeSet, MaxHealth)
-
 	//Attribute for Mana
 	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_Mana)
 	FGameplayAttributeData Mana;
 	ATTRIBUTE_ACCESSORS(UGASAttributeSet, Mana)
+
+	//Attribute for MaxHealth
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_MaxHealth)
+	FGameplayAttributeData MaxHealth;
+	ATTRIBUTE_ACCESSORS(UGASAttributeSet, MaxHealth)
 
 	//Attribute for MaxMana
 	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_MaxMana)
@@ -69,14 +69,16 @@ public:
 	//Delegates for attribute changes
 	FAttrChangeDelegate HealthChangeDelegate;
 	FAttrChangeDelegate ManaChangeDelegate;
+	FAttrChangeDelegate MaxHealthChangeDelegate;
+	FAttrChangeDelegate MaxManaChangeDelegate;
 	FAttrChangeDelegate MoveSpeedChangeDelegate;
 	//Replication Functions for Attributes
 	UFUNCTION()
 	virtual void OnRep_Health(const FGameplayAttributeData& OldHealth);
 	UFUNCTION()
-	virtual void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth);
-	UFUNCTION()
 	virtual void OnRep_Mana(const FGameplayAttributeData& OldMana);
+	UFUNCTION()
+	virtual void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth);
 	UFUNCTION()
 	virtual void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana);
 	UFUNCTION()

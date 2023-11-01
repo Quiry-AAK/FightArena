@@ -16,13 +16,23 @@ void UGASAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMod
 
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
-		SetHealth(FMath::Clamp(GetHealth(), 0.0f, GetMaxHealth()));
+		SetHealth(FMath::Clamp(GetHealth(), 0.0f, 100.0f));
 		HealthChangeDelegate.Broadcast(GetHealth(), Data.EffectSpec.StackCount);
 	}
 	if (Data.EvaluatedData.Attribute == GetManaAttribute())
 	{
-		SetMana(FMath::Clamp(GetMana(), 0.0f, GetMaxMana()));
+		SetMana(FMath::Clamp(GetMana(), 0.0f, 100.0f));
 		ManaChangeDelegate.Broadcast(GetMana(), Data.EffectSpec.StackCount);
+	}
+	if (Data.EvaluatedData.Attribute == GetMaxHealthAttribute())
+	{
+		SetMaxHealth(FMath::Clamp(GetMaxHealth(), 0.0f, 100.0f));
+		MaxHealthChangeDelegate.Broadcast(GetMaxHealth(), Data.EffectSpec.StackCount);
+	}
+	if (Data.EvaluatedData.Attribute == GetMaxManaAttribute())
+	{
+		SetMaxMana(FMath::Clamp(GetMaxMana(), 0.0f, 100.0f));
+		MaxManaChangeDelegate.Broadcast(GetMaxMana(), Data.EffectSpec.StackCount);
 	}
 	if (Data.EvaluatedData.Attribute == GetMoveSpeedAttribute())
 	{
@@ -35,8 +45,8 @@ void UGASAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME_CONDITION_NOTIFY(UGASAttributeSet, Health, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UGASAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UGASAttributeSet, Mana, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UGASAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UGASAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UGASAttributeSet, MoveSpeed, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UGASAttributeSet, MaxMoveSpeed, COND_None, REPNOTIFY_Always);
@@ -46,13 +56,13 @@ void UGASAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UGASAttributeSet, Health, OldHealth);
 }
-void UGASAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth)
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UGASAttributeSet, MaxHealth, OldMaxHealth);
-}
 void UGASAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldMana)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UGASAttributeSet, Mana, OldMana);
+}
+void UGASAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UGASAttributeSet, MaxHealth, OldMaxHealth);
 }
 void UGASAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana)
 {
