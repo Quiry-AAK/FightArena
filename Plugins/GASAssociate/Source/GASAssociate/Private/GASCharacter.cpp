@@ -18,7 +18,7 @@ AGASCharacter::AGASCharacter()
 
 //==PATTERN==
 
-	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Full);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
 }
 
@@ -29,14 +29,17 @@ void AGASCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	if (AbilitySystemComponent)
-{
-		//Link Attribute Set to Ability System Component
-		AttributeSetVar = AbilitySystemComponent->GetSet<UGASAttributeSet>();
+	{
+		if (AbilitySystemComponent->DefaultStartingData.Num() > 0 && AbilitySystemComponent->DefaultStartingData[0].Attributes != NULL && AbilitySystemComponent->DefaultStartingData[0].DefaultStartingTable != NULL)
+		{
+			//Link Attribute Set to Ability System Component
+			AttributeSetVar = AbilitySystemComponent->GetSet<UGASAttributeSet>();
 
-		//Bindings for Attribute Change Delegates
-		const_cast<UGASAttributeSet*>(AttributeSetVar)->HealthChangeDelegate.AddDynamic(this, &AGASCharacter::OnHealthChangedNative);
-		const_cast<UGASAttributeSet*>(AttributeSetVar)->ManaChangeDelegate.AddDynamic(this, &AGASCharacter::OnManaChangedNative);
-		const_cast<UGASAttributeSet*>(AttributeSetVar)->AttackPowerChangeDelegate.AddDynamic(this, &AGASCharacter::OnAttackPowerChangedNative);
+			//Bindings for Attribute Change Delegates
+			const_cast<UGASAttributeSet*>(AttributeSetVar)->HealthChangeDelegate.AddDynamic(this, &AGASCharacter::OnHealthChangedNative);
+			const_cast<UGASAttributeSet*>(AttributeSetVar)->ManaChangeDelegate.AddDynamic(this, &AGASCharacter::OnManaChangedNative);
+			const_cast<UGASAttributeSet*>(AttributeSetVar)->MoveSpeedChangeDelegate.AddDynamic(this, &AGASCharacter::OnMoveSpeedChangedNative);
+		}
 	}
 }
 
@@ -278,9 +281,9 @@ void AGASCharacter::OnManaChangedNative(float Mana, int32 StackCount)
 	OnManaChange(Mana, StackCount);
 }
 
-void AGASCharacter::OnAttackPowerChangedNative(float AttackPower, int32 StackCount)
+void AGASCharacter::OnMoveSpeedChangedNative(float MoveSpeed, int32 StackCount)
 {
-	OnAttackPowerChange(AttackPower, StackCount);
+	OnMoveSpeedChange(MoveSpeed, StackCount);
 }
 
 void AGASCharacter::GetHealthValues(float& Health, float& MaxHealth)
@@ -301,11 +304,12 @@ void AGASCharacter::GetManaValues(float& Mana, float& MaxMana)
 	}
 }
 
-void AGASCharacter::GetAttackPowerValue(float& AttackPower)
+void AGASCharacter::GetMoveSpeedValues(float& MoveSpeed, float& MaxMoveSpeed)
 {
 	if (AttributeSetVar)
 	{
-		AttackPower = AttributeSetVar->GetAttackPower();
+		MoveSpeed = AttributeSetVar->GetMoveSpeed();
+		MaxMoveSpeed = AttributeSetVar->GetMaxMoveSpeed();
 	}
 }
 
@@ -327,11 +331,12 @@ void AGASCharacter::SetManaValues(float NewMana, float NewMaxMana)
 	}
 }
 
-void AGASCharacter::SetAttackPowerValue(float NewAttackPower)
+void AGASCharacter::SetMoveSpeedValues(float NewMoveSpeed, float NewMaxMoveSpeed)
 {
 	if (AttributeSetVar)
 	{
-		AbilitySystemComponent->ApplyModToAttribute(AttributeSetVar->GetAttackPowerAttribute(), EGameplayModOp::Override, NewAttackPower);
+		AbilitySystemComponent->ApplyModToAttribute(AttributeSetVar->GetMoveSpeedAttribute(), EGameplayModOp::Override, NewMoveSpeed);
+		AbilitySystemComponent->ApplyModToAttribute(AttributeSetVar->GetMaxMoveSpeedAttribute(), EGameplayModOp::Override, NewMaxMoveSpeed); 
 	}
 }
 

@@ -24,10 +24,10 @@ void UGASAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMod
 		SetMana(FMath::Clamp(GetMana(), 0.0f, GetMaxMana()));
 		ManaChangeDelegate.Broadcast(GetMana(), Data.EffectSpec.StackCount);
 	}
-	if (Data.EvaluatedData.Attribute == GetAttackPowerAttribute())
+	if (Data.EvaluatedData.Attribute == GetMoveSpeedAttribute())
 	{
-		SetAttackPower(FMath::Clamp(GetAttackPower(), 0.0f, 20.0f));
-		AttackPowerChangeDelegate.Broadcast(GetAttackPower(), Data.EffectSpec.StackCount);
+		SetMoveSpeed(FMath::Clamp(GetMoveSpeed(), 1.0f, GetMaxMoveSpeed()));
+		MoveSpeedChangeDelegate.Broadcast(GetMoveSpeed(), Data.EffectSpec.StackCount);
 	}
 }
 
@@ -38,7 +38,8 @@ void UGASAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME_CONDITION_NOTIFY(UGASAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UGASAttributeSet, Mana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UGASAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UGASAttributeSet, AttackPower, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UGASAttributeSet, MoveSpeed, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UGASAttributeSet, MaxMoveSpeed, COND_None, REPNOTIFY_Always);
 }
 
 void UGASAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth)
@@ -57,7 +58,11 @@ void UGASAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UGASAttributeSet, MaxMana, OldMaxMana);
 }
-void UGASAttributeSet::OnRep_AttackPower(const FGameplayAttributeData& OldAttackPower)
+void UGASAttributeSet::OnRep_MoveSpeed(const FGameplayAttributeData& OldMoveSpeed)
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UGASAttributeSet, AttackPower, OldAttackPower);
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UGASAttributeSet, MoveSpeed, OldMoveSpeed);
+}
+void UGASAttributeSet::OnRep_MaxMoveSpeed(const FGameplayAttributeData& OldMaxMoveSpeed)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UGASAttributeSet, MaxMoveSpeed, OldMaxMoveSpeed);
 }

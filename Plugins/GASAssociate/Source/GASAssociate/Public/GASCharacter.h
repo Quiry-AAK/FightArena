@@ -124,7 +124,7 @@ public:
 	UFUNCTION()
 	virtual void OnManaChangedNative(float Mana, int32 StackCount);
 	UFUNCTION()
-	virtual void OnAttackPowerChangedNative(float AttackPower, int32 StackCount);
+	virtual void OnMoveSpeedChangedNative(float MoveSpeed, int32 StackCount);
 
 
 	//******Event that bind to native events and are implemented in BPs********
@@ -135,9 +135,9 @@ public:
 	//Event Trigger On Mana Change
 	UFUNCTION(BlueprintImplementableEvent, Category = "GASGameplayAbility")
 	void OnManaChange(float Mana, int32 StackCount);
-	//Event Trigger On AttackPower Change
+	//Event Trigger On MoveSpeed Change
 	UFUNCTION(BlueprintImplementableEvent, Category = "GASGameplayAbility")
-	void OnAttackPowerChange(float AttackPower, int32 StackCount);
+	void OnMoveSpeedChange(float MoveSpeed, int32 StackCount);
 
 
 	//*******Ability Values Getter Functions**********
@@ -148,9 +148,9 @@ public:
 	//Getter for Mana Values
 	UFUNCTION(BlueprintPure, Category = "GASGameplayAbility")
 	void GetManaValues(float& Mana, float& MaxMana);
-	//Getter for AttackPower Values
+	//Getter for MoveSpeed Values
 	UFUNCTION(BlueprintPure, Category = "GASGameplayAbility")
-	void GetAttackPowerValue(float& AttackPower);
+	void GetMoveSpeedValues(float& MoveSpeed, float& MaxMoveSpeed);
 
 
 	//*******Ability Values Setter Functions**********
@@ -161,9 +161,9 @@ public:
 	//Setter for Mana Values
 	UFUNCTION(BlueprintCallable, Category = "GASGameplayAbility")
 	void SetManaValues(float NewMana, float NewMaxMana);
-	//Setter for AttackPower Values
+	//Setter for MoveSpeed Values
 	UFUNCTION(BlueprintCallable, Category = "GASGameplayAbility")
-	void SetAttackPowerValue(float NewAttackPower);
+	void SetMoveSpeedValues(float NewMoveSpeed, float NewMaxMoveSpeed);
 
 
 };
